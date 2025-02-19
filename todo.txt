@@ -1,0 +1,4 @@
+Useful links:
+https://developer.chrome.com/docs/extensions/get-started/tutorial/scripts-activetab
+https://developer.chrome.com/docs/extensions/develop
+https://developer.chrome.com/docs/extensions/reference/api
