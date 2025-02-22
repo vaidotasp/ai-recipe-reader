@@ -15,6 +15,18 @@ chrome.runtime.onInstalled.addListener((event) => {
   });
 });
 
+chrome.runtime.onMessage.addListener(async (message, _sender, sendResponse) => {
+  //
+  if (message === "init-scan") {
+    console.log("init scan received from react into service worker");
+    const result = await chrome.scripting.executeScript({
+      target: { tabId: activeInfo.tabId },
+      files: ["parse-and-extract-content.js"],
+    });
+    sendResponse(result);
+  }
+});
+
 chrome.tabs.onActivated.addListener(async (activeInfo) => {
   const result = await chrome.scripting.executeScript({
     target: { tabId: activeInfo.tabId },
@@ -22,14 +34,6 @@ chrome.tabs.onActivated.addListener(async (activeInfo) => {
   });
   console.log(result);
 });
-
-// chrome.tabs.onUpdated.addListener(() => {
-//   // showSummary(tabId);
-//   const result = extractDOMContent();
-//   if (result.error) {
-//     throw new Error(result.msg);
-//   }
-// });
 
 chrome.tabs.onUpdated.addListener(async (tabId, info, tab) => {
   console.log(tabId, info, tab);
