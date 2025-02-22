@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 function App() {
   const [activeTab, setActiveTab] = useState<number>();
+  const ab = "ab";
   async function scanPage() {
     console.log("init scan", activeTab);
 
@@ -22,14 +23,12 @@ function App() {
   }
 
   useEffect(() => {
-    // get current tab id
     chrome.tabs.query(
       {
         currentWindow: true,
         active: true,
       },
       (response) => {
-        console.log(response);
         setActiveTab(response[0].id);
       },
     );
