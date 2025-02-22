@@ -9,7 +9,16 @@
   "background": {
     "service_worker": "background.js"
   },
-  "permissions": ["background", "activeTab", "tabs", "windows", "sidePanel"],
+  "host_permissions": ["http://*/*", "https://*/*"],
+  "permissions": [
+    "background",
+    "activeTab",
+    "tabs",
+    "windows",
+    "sidePanel",
+    "scripting",
+    "storage"
+  ],
   "commands": {
     "_execute_action": {
       "suggested_key": {
