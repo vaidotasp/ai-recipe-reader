@@ -1,6 +1,12 @@
 import reactLogo from "./assets/react.svg";
 import "./App.css";
 import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+
+type ExtractResult = {
+  error: boolean;
+  msg: string;
+};
 
 function App() {
   const [activeTab, setActiveTab] = useState<number>();
@@ -13,25 +19,30 @@ function App() {
         target: { tabId: activeTab },
         files: ["parse-and-extract-content.js"],
       });
+      // conversion of types for simplicity sake
+      const { error, msg } = result[0]?.result as any as ExtractResult;
       console.log(result);
+      if (!error) {
+        console.log(msg);
+      }
     }
-    // chrome.runtime.sendMessage("init-scan", (response) => {
-    //   console.log("received - react", response);
-    // });
 
     //scan DOM that the extension is operating on
   }
 
   useEffect(() => {
-    chrome.tabs.query(
-      {
-        currentWindow: true,
-        active: true,
-      },
-      (response) => {
-        setActiveTab(response[0].id);
-      },
-    );
+    // if extension scope
+    if (chrome?.tabs?.query) {
+      chrome.tabs.query(
+        {
+          currentWindow: true,
+          active: true,
+        },
+        (response) => {
+          setActiveTab(response[0].id);
+        },
+      );
+    }
   }, []);
 
   return (
@@ -43,8 +54,11 @@ function App() {
       </div>
       <h1>AI Recipe Scrubber</h1>
       <div className="card">
-        <button onClick={scanPage}>Scan page</button>
-        <div>Confidence of recipe page - high</div>
+        <Button onClick={scanPage}>Scan page</Button>
+        <div className="text-3xl font-bold underline">
+          Confidence of recipe page - high
+        </div>
+        <button className="text-3xl font-bold underline">Click me</button>
       </div>
     </>
   );
