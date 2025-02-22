@@ -12,11 +12,14 @@ export default defineConfig({
       input: {
         main: "./index.html",
         background: "src/background.ts",
+        "parse-and-extract-content": "src/parse-and-extract-content.ts",
       },
       output: {
         entryFileNames: (chunk) => {
           if (chunk.name === "background") {
             return "background.js";
+          } else if (chunk.name === "parse-and-extract-content") {
+            return "parse-and-extract-content.js";
           } else {
             return "[name].js";
           }
