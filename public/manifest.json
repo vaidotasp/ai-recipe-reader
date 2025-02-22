@@ -8,5 +8,14 @@
   },
   "background": {
     "service_worker": "background.js"
+  },
+  "permissions": ["background", "activeTab", "tabs", "windows", "sidePanel"],
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Ctrl+B",
+        "mac": "Command+B"
+      }
+    }
   }
 }

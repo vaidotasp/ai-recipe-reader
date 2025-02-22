@@ -15,7 +15,11 @@ export default defineConfig({
       },
       output: {
         entryFileNames: (chunk) => {
-          return chunk.name === "background" ? "background.js" : "[name].js";
+          if (chunk.name === "background") {
+            return "background.js";
+          } else {
+            return "[name].js";
+          }
         },
       },
     },
