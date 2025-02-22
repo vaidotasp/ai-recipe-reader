@@ -1,11 +1,7 @@
 import { isProbablyReaderable, Readability } from "@mozilla/readability";
 
 function init() {
-  console.log("hello from parser!");
   const rawDoc = window.document;
-
-  console.log(rawDoc);
-  console.log(isProbablyReaderable, Readability);
   if (
     !isProbablyReaderable(rawDoc, {
       minContentLength: 100,
