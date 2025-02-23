@@ -1,26 +1,22 @@
+import { CircleCheck, Download } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-/*
-example string:
+type ParsedRecipe = {
+  title: string;
+  ingredients: string[];
+  instructions: string[];
+};
 
-{title: Best Chicken Parmesan Recipe}
-{ingredients: chicken breast, mozzarella cheese, spaghetti sauce, parsley, all-purpose flour, salt and pepper, seasoned bread crumbs, eggs, water or milk}
-{instructions: 1. Flatten the skinless boneless chicken breasts with a meat mallet. 2. Set up a breading station with flour, egg wash, and bread crumbs. 3. Coat the chicken breasts with the seasoned flour and then the egg wash. 4. Heat a large saute pan on high heat and add vegetable oil. 5. Carefully place the breaded chicken cutlets into the oil and cook until golden brown. 6. Drain the fried chicken cutlets on baking racks and top with spaghetti sauce and mozzarella cheese. 7. Sprinkle parsley on top and bake at 350 degrees F for 20 minutes.}
 
 
-*/
-
-const str =
-  "{title: Best Chicken Parmesan Recipe}{ingredients: chicken breast, mozzarella cheese, spaghetti sauce, parsley, all-purpose flour, salt and pepper, seasoned bread crumbs, eggs, water or milk}{instructions: 1. Flatten the skinless boneless chicken breasts with a meat mallet. 2. Set up a breading station with flour, egg wash, and bread crumbs. 3. Coat the chicken breasts with the seasoned flour and then the egg wash. 4. Heat a large saute pan on high heat and add vegetable oil. 5. Carefully place the breaded chicken cutlets into the oil and cook until golden brown. 6. Drain the fried chicken cutlets on baking racks and top with spaghetti sauce and mozzarella cheese. 7. Sprinkle parsley on top and bake at 350 degrees F for 20 minutes.}";
-
-function parseRecipeResponse(rawInput: string) {
+function parseRecipeResponse(rawInput: string): ParsedRecipe | undefined {
   console.log("rawInput", rawInput);
   try {
     const parsed = JSON.parse(rawInput);
@@ -32,11 +28,11 @@ function parseRecipeResponse(rawInput: string) {
       };
     } else {
       console.error("Invalid recipe format");
-      return null;
+      return;
     }
   } catch (err) {
     console.error(err);
-    return null;
+    return;
   }
 }
 
@@ -46,35 +42,58 @@ export function RecipeSummary({ str }: { str: string }) {
     return null;
   }
 
-  const ingredients = () => {
+  const Ingredients = () => {
     return recipe.ingredients.map((ingredient: string) => (
-      <li key={ingredient}>{ingredient}</li>
+      <li key={ingredient}>
+        <small className="text-sm font-normal leading-none">{ingredient}</small>
+      </li>
     ));
   };
 
-  const instructions = () => {
+  const Instructions = () => {
     return recipe.instructions.map((instruction: string, index: number) => (
-      <li key={index}>{instruction}</li>
+      <li key={index}>
+        <small className="text-sm font-normal leading-none">
+          {instruction}
+        </small>
+      </li>
     ));
   };
 
   return (
     <Dialog>
       <DialogTrigger className="mt-3">
-        Recipe ready, click to view!
+        <Button variant="outline">
+          <CircleCheck /> Recipe ready, click to view!
+        </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="lg:max-w-screen-lg overflow-y-auto max-h-screen printContent">
         <DialogHeader>
           <DialogTitle>{recipe.title}</DialogTitle>
-          <DialogDescription>
-            Ingredients
-            <ul>{ingredients()}</ul>
-          </DialogDescription>
-          <DialogDescription>
-            Instructions
-            <ul>{instructions()}</ul>
-          </DialogDescription>
         </DialogHeader>
+        <section>
+          <h4 className="scroll-m-20 text-lg font-semibold tracking-tight">
+            Ingredients
+          </h4>
+          <ul className="mt-2 mb-6 ml-4 list-disc">
+            <Ingredients />
+          </ul>
+          <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
+            Instructions
+          </h4>
+          <ol className="my-6 ml-6 list-decimal">
+            <Instructions />
+          </ol>
+        </section>
+        <Button
+          className="max-w-32 align-middle justify-center printButton"
+          onClick={() => {
+            saveAndDownload(recipe);
+          }}
+        >
+          <Download />
+          Save (JSON)
+        </Button>
       </DialogContent>
     </Dialog>
   );
