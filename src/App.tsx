@@ -12,11 +12,8 @@ type ExtractResult = {
   msg: string;
 };
 
-// Max tokens is about 6144 for the model but maxing out at 6k., implement token checker
-const MAX_TOKENS = 6000;
-
 function App() {
-  const { modelReady, isLoading, session } = useEnsureAIOriginTrialReady();
+  const { isLoading, session } = useEnsureAIOriginTrialReady();
   const activeTab = useActiveTab();
   const [responseLoading, setResponseLoading] = useState(false);
   const [response, setResponse] = useState<string | null>(null);
@@ -33,15 +30,12 @@ function App() {
       // conversion of types for simplicity sake
       const { error, msg } = result[0]?.result as any as ExtractResult;
       if (!error) {
-        console.log(msg);
         if (session) {
           setResponseLoading(true);
           try {
             const res = await session.prompt(msg);
             setResponse(res);
             setResponseLoading(false);
-            debugger;
-            console.log(res);
           } catch (err) {
             console.error("err", err);
             setGlobalError(true);
@@ -74,6 +68,9 @@ function App() {
         </Button>
       )}
       {response && <RecipeSummary str={response} />}
+      {/* debug */}
+      {/* <RecipeSummary str={"response"} /> */}
+      {globalError && <p className="text-sm  text-red-600">Error occurred</p>}
     </div>
   );
 }
