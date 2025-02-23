@@ -1,6 +1,6 @@
 import reactLogo from "./assets/react.svg";
 import "./App.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useActiveTab } from "./hooks/useActiveTab";
 import { Loader2 } from "lucide-react";
@@ -19,7 +19,7 @@ function App() {
   const { modelReady, isLoading, session } = useEnsureAIOriginTrialReady();
   const activeTab = useActiveTab();
   const [responseLoading, setResponseLoading] = useState(false);
-  const [response, setResponse] = useState(null);
+  const [response, setResponse] = useState<string | null>(null);
   const [globalError, setGlobalError] = useState(false);
 
   async function scanPage() {
