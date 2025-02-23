@@ -23,7 +23,8 @@
     "sidePanel",
     "scripting",
     "storage",
-    "aiLanguageModelOriginTrial"
+    "aiLanguageModelOriginTrial",
+    "downloads"
   ],
   "commands": {
     "_execute_action": {
