@@ -15,6 +15,17 @@ type ParsedRecipe = {
 };
 
 
+function saveAndDownload(recipe: ParsedRecipe) {
+  const blob = new Blob([JSON.stringify(recipe)], {
+    type: "application/json",
+  });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `${recipe.title}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
 
 function parseRecipeResponse(rawInput: string): ParsedRecipe | undefined {
   console.log("rawInput", rawInput);
