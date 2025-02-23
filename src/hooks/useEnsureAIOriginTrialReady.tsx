@@ -11,7 +11,7 @@ export function useEnsureAIOriginTrialReady() {
     async function createSession() {
       const params = {
         systemPrompt:
-          "You are a helpful assistant, you are very consistent and precise.",
+          "You are a helpful assistant, you are very consistent and precise. Your job is to respond in exactly this formatting. {title: read through the input text and provide a title of the recipe, ingredients: read through the input text and provide a list of ingredients, instructions: read through the input text and provide a list of instructions, summarize instructions step by step use 1-3 sentences as needed}",
         temperature: 1.0, // default
         topK: 3, // default
       };
@@ -40,18 +40,6 @@ export function useEnsureAIOriginTrialReady() {
       }
     }
     checkModalCapabilities();
-    // if extension scope detect and save tabid for later use
-    // if (chrome?.tabs?.query) {
-    //   chrome.tabs.query(
-    //     {
-    //       currentWindow: true,
-    //       active: true,
-    //     },
-    //     (response) => {
-    //       setActiveTab(response[0].id);
-    //     },
-    //   );
-    // }
   }, []);
 
   return { isLoading, modelReady, session };

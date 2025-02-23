@@ -17,10 +17,10 @@ function App() {
   const { modelReady, isLoading, session } = useEnsureAIOriginTrialReady();
   const activeTab = useActiveTab();
   const [responseLoading, setResponseLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [globalError, setGlobalError] = useState(false);
 
   async function scanPage() {
-    setError(false);
+    setGlobalError(false);
     console.log("init scan", activeTab);
 
     if (activeTab) {
@@ -37,14 +37,14 @@ function App() {
         console.log(modelReady, isLoading, session);
         console.log(msg);
         if (session) {
+          setResponseLoading(true);
           try {
-            const res = await session.prompt(
-              "Tell me in 3 sentences why Earth is round",
-            );
+            const res = await session.prompt(msg);
+            setResponseLoading(false);
             console.log(res);
           } catch (err) {
             console.error("err", err);
-            setError(true);
+            setGlobalError(true);
           }
         }
       }
