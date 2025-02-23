@@ -1,5 +1,9 @@
 {
   "name": "AI Recipe Reader",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyBNx6CEgtNoax862Ztk5KZLAOSNYFf9slQgBzn1TZ1H2TsZ2lc9sDWu33x4GiF5Qs6pRth9LMHjimzqmOhtX7JNzhRErVIglTRHP6XQVcTiKocswR9C29mNC2neieWwwwMbw4wtaR6wqAc95MxMUvfZKxL4w5E7d0deGhWjlAUdYUev8llOzI7wySes3JBQyNT8U5h2oD91i9ulzlIAeL/rv6KQgMwVwIZjUhO9vf1/zD07zIN0Xa3294NsZaDwPd7yRp0C/k4Schru/XEQ8oQ7KApnV5zUn+uAGgOWHlk//sOfzxK5Mf5fCf5RrFGEuZgboPSgNd64v9f5W0blplQIDAQAB",
+  "trial_tokens": [
+    "ArvG9XFYayAw8mEEc1luPQLmpmig88kC6Hxksbx5ca1zhZWmz93jnKQIpL0fNFXIEqC05t7BSSjmrfDrLey1OgEAAAB4eyJvcmlnaW4iOiJjaHJvbWUtZXh0ZW5zaW9uOi8vaGVham9hcGdjZGRmcGNwZGVocGNocGlsYmdobmtuZmciLCJmZWF0dXJlIjoiQUlQcm9tcHRBUElGb3JFeHRlbnNpb24iLCJleHBpcnkiOjE3NjA0ODYzOTl9"
+  ],
   "description": "WIP",
   "version": "1.0",
   "manifest_version": 3,
@@ -9,6 +13,7 @@
   "background": {
     "service_worker": "background.js"
   },
+  "minimum_chrome_version": "131",
   "host_permissions": ["http://*/*", "https://*/*"],
   "permissions": [
     "background",
@@ -17,7 +22,8 @@
     "windows",
     "sidePanel",
     "scripting",
-    "storage"
+    "storage",
+    "aiLanguageModelOriginTrial"
   ],
   "commands": {
     "_execute_action": {

@@ -2,19 +2,29 @@ import reactLogo from "./assets/react.svg";
 import "./App.css";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useActiveTab } from "./hooks/useActiveTab";
+import { useEnsureAIOriginTrialReady } from "./hooks/useEnsureAIOriginTrialReady";
 
 type ExtractResult = {
   error: boolean;
   msg: string;
 };
 
+// Max tokens is about 6144 for the model but maxing out at 6k.
+const MAX_TOKENS = 6000;
+
 function App() {
-  const [activeTab, setActiveTab] = useState<number>();
-  const ab = "ab";
+  const { modelReady, isLoading, session } = useEnsureAIOriginTrialReady();
+  const activeTab = useActiveTab();
+  const [responseLoading, setResponseLoading] = useState(false);
+  const [error, setError] = useState(false);
+
   async function scanPage() {
+    setError(false);
     console.log("init scan", activeTab);
 
     if (activeTab) {
+      //exec script to parse DOM and extract text content
       const result = await chrome.scripting.executeScript({
         target: { tabId: activeTab },
         files: ["parse-and-extract-content.js"],
@@ -23,27 +33,23 @@ function App() {
       const { error, msg } = result[0]?.result as any as ExtractResult;
       console.log(result);
       if (!error) {
+        console.log("confirm model status");
+        console.log(modelReady, isLoading, session);
         console.log(msg);
+        if (session) {
+          try {
+            const res = await session.prompt(
+              "Tell me in 3 sentences why Earth is round",
+            );
+            console.log(res);
+          } catch (err) {
+            console.error("err", err);
+            setError(true);
+          }
+        }
       }
     }
-
-    //scan DOM that the extension is operating on
   }
-
-  useEffect(() => {
-    // if extension scope
-    if (chrome?.tabs?.query) {
-      chrome.tabs.query(
-        {
-          currentWindow: true,
-          active: true,
-        },
-        (response) => {
-          setActiveTab(response[0].id);
-        },
-      );
-    }
-  }, []);
 
   return (
     <>

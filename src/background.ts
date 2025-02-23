@@ -28,10 +28,10 @@ chrome.runtime.onInstalled.addListener((event) => {
 // });
 
 chrome.tabs.onActivated.addListener(async (activeInfo) => {
-  const result = await chrome.scripting.executeScript({
-    target: { tabId: activeInfo.tabId },
-    files: ["parse-and-extract-content.js"],
-  });
+  // const result = await chrome.scripting.executeScript({
+  //   target: { tabId: activeInfo.tabId },
+  //   files: ["parse-and-extract-content.js"],
+  // });
 });
 
 chrome.tabs.onUpdated.addListener(async (tabId, info, tab) => {
@@ -41,8 +41,8 @@ chrome.tabs.onUpdated.addListener(async (tabId, info, tab) => {
     enabled: true,
   });
 
-  const result = await chrome.scripting.executeScript({
-    target: { tabId },
-    files: ["parse-and-extract-content.js"],
-  });
+  // const result = await chrome.scripting.executeScript({
+  //   target: { tabId },
+  //   files: ["parse-and-extract-content.js"],
+  // });
 });
