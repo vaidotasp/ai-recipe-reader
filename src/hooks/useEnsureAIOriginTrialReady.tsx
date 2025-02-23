@@ -9,7 +9,7 @@ export function useEnsureAIOriginTrialReady() {
     async function createSession() {
       const params = {
         systemPrompt:
-          "You are a helpful assistant, you are very consistent and precise. Your job is to respond in exactly this formatting. {title: read through the input text and provide a title of the recipe, ingredients: read through the input text and provide a list of ingredients, instructions: read through the input text and provide a list of instructions, summarize instructions step by step use 1-3 sentences as needed}",
+          "You are a helpful assistant, you are very consistent and precise. Your job is to respond in exactly this formatting in JSON. {title: read through the input text and provide a title of the recipe, ingredients: read through the input text and provide a list of ingredients, instructions: read through the input text and provide a list of instructions, summarize each instruction step to 1-3 sentences as needed}",
         temperature: 1.0, // default
         topK: 3, // default
       };

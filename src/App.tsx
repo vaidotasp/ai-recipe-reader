@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useActiveTab } from "./hooks/useActiveTab";
 import { Loader2 } from "lucide-react";
 import { useEnsureAIOriginTrialReady } from "./hooks/useEnsureAIOriginTrialReady";
+import { RecipeSummary } from "./RecipeSummary";
 
 type ExtractResult = {
   error: boolean;
@@ -18,6 +19,7 @@ function App() {
   const { modelReady, isLoading, session } = useEnsureAIOriginTrialReady();
   const activeTab = useActiveTab();
   const [responseLoading, setResponseLoading] = useState(false);
+  const [response, setResponse] = useState(null);
   const [globalError, setGlobalError] = useState(false);
 
   async function scanPage() {
@@ -36,7 +38,9 @@ function App() {
           setResponseLoading(true);
           try {
             const res = await session.prompt(msg);
+            setResponse(res);
             setResponseLoading(false);
+            debugger;
             console.log(res);
           } catch (err) {
             console.error("err", err);
@@ -59,16 +63,17 @@ function App() {
         Use below button to scan the page for the recipe content, Nano AI will
         parse the content and extract the recipe information.
       </p>
-      {!isLoading ? (
-        <Button className="w-32" onClick={scanPage}>
-          Scan page
-        </Button>
-      ) : (
+      {isLoading || responseLoading ? (
         <Button disabled className="w-32">
           <Loader2 className="animate-spin" />
           Loading...
         </Button>
+      ) : (
+        <Button className="w-32 mt-2 mb-2" onClick={scanPage}>
+          Scan page
+        </Button>
       )}
+      {response && <RecipeSummary str={response} />}
     </div>
   );
 }
