@@ -6,8 +6,6 @@ export function useEnsureAIOriginTrialReady() {
   const [session, setSession] = useState(null);
 
   useEffect(() => {
-    setIsLoading(true);
-
     async function createSession() {
       const params = {
         systemPrompt:
@@ -19,19 +17,18 @@ export function useEnsureAIOriginTrialReady() {
       // @ts-ignore - API seems too new
       const s = await chrome.aiOriginTrial.languageModel.create(params);
       setSession(s);
+      setIsLoading(false);
     }
 
     async function checkModalCapabilities() {
       // @ts-ignore - API seems too new
       const res = await chrome.aiOriginTrial.languageModel.capabilities();
-      console.log(res);
       if (res.available == "readily") {
         //good to go to use it, we can go ahead and create session
         setModelReady(true);
-        setIsLoading(false);
         createSession();
       } else if (res.available === "after-download") {
-        // download model first
+        setModelReady(true);
         createSession();
       } else {
         // other case should be non-available model

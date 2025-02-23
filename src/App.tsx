@@ -3,6 +3,7 @@ import "./App.css";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useActiveTab } from "./hooks/useActiveTab";
+import { Loader2 } from "lucide-react";
 import { useEnsureAIOriginTrialReady } from "./hooks/useEnsureAIOriginTrialReady";
 
 type ExtractResult = {
@@ -10,7 +11,7 @@ type ExtractResult = {
   msg: string;
 };
 
-// Max tokens is about 6144 for the model but maxing out at 6k.
+// Max tokens is about 6144 for the model but maxing out at 6k., implement token checker
 const MAX_TOKENS = 6000;
 
 function App() {
@@ -21,8 +22,6 @@ function App() {
 
   async function scanPage() {
     setGlobalError(false);
-    console.log("init scan", activeTab);
-
     if (activeTab) {
       //exec script to parse DOM and extract text content
       const result = await chrome.scripting.executeScript({
@@ -31,10 +30,7 @@ function App() {
       });
       // conversion of types for simplicity sake
       const { error, msg } = result[0]?.result as any as ExtractResult;
-      console.log(result);
       if (!error) {
-        console.log("confirm model status");
-        console.log(modelReady, isLoading, session);
         console.log(msg);
         if (session) {
           setResponseLoading(true);
@@ -52,21 +48,28 @@ function App() {
   }
 
   return (
-    <>
+    <div className="flex flex-col items-center justify-center">
       <div>
         <a href="https://react.dev" target="_blank">
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
       </div>
       <h1>AI Recipe Scrubber</h1>
-      <div className="card">
-        <Button onClick={scanPage}>Scan page</Button>
-        <div className="text-3xl font-bold underline">
-          Confidence of recipe page - high
-        </div>
-        <button className="text-3xl font-bold underline">Click me</button>
-      </div>
-    </>
+      <p>
+        Use below button to scan the page for the recipe content, Nano AI will
+        parse the content and extract the recipe information.
+      </p>
+      {!isLoading ? (
+        <Button className="w-32" onClick={scanPage}>
+          Scan page
+        </Button>
+      ) : (
+        <Button disabled className="w-32">
+          <Loader2 className="animate-spin" />
+          Loading...
+        </Button>
+      )}
+    </div>
   );
 }
 
