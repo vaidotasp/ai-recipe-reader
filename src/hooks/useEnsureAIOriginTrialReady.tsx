@@ -1,9 +1,14 @@
 import { useEffect, useState } from "react";
 
+// TODO: Find better offcial types for Chrome AI Session when available
+type Session = {
+  prompt: (val: string) => Promise<string>;
+};
+
 export function useEnsureAIOriginTrialReady() {
   const [modelReady, setModelReady] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [session, setSession] = useState(null);
+  const [session, setSession] = useState<Session | null>(null);
 
   useEffect(() => {
     async function createSession() {
