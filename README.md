@@ -11,3 +11,11 @@ The problem with most recipe websites is that they are often unreadable, full of
 - **Summarization**: Extension uses experiment [Gemini 1.0 Nano](https://deepmind.google/technologies/gemini/nano/) model that is made for on-demand devices. This allows extension to operate independently without backend. However, in order to play with this, you will need to sign up for [Prompt API](https://developer.chrome.com/docs/extensions/ai/prompt-api) origin trial. APIs likely will change in time so calls would have to be adjusted based on current iteration.
 - **Limitations**: Model is fairly slow, regular recipe page takes up to 10-15seconds to summarize, it also has limits on tokens and limits may change in the future as this is very early access, trial mode. At this time (Feb, 2025) it is unpaid and free to use with some limitations on prompt input size.
 - **Prompt API**: If you want to use extension as is, after you sign up for the Prompt API trial, make sure to input your `key` and `trial-tokens` in `manifest.json` file. Also make sure that you [extension ID is stable](https://developer.chrome.com/docs/extensions/reference/manifest/key#keep-consistent-id).
+
+### Things to improve
+
+There are many features/improvements to be done for this extension to reach stable and viable version.
+
+- Gemini Nano is a good fit here but it is not stable yet, meanwhile we may need to use a more robust AI model that involves API calls and inevitably authentication/authorization solutions.
+- In order to save recipes we could introduce a storage component and sync feature, for simplicity sake we could just use chrome identity and solutions they provide for extension dev
+- Codebase lacks testing and E2E best practices, overall error handling and recovery could be improved.
