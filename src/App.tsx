@@ -1,4 +1,3 @@
-import reactLogo from "./assets/react.svg";
 import "./App.css";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -48,15 +47,10 @@ function App() {
   return (
     <div className="flex flex-col items-center justify-center">
       <div>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <img src={"/recipe.png"} className="logo" alt="logo" />
       </div>
       <h1>AI Recipe Scrubber</h1>
-      <p>
-        Use below button to scan the page for the recipe content, Nano AI will
-        parse the content and extract the recipe information.
-      </p>
+      <p>Scan page with Gemini Nano AI to extract recipe information.</p>
       {isLoading || responseLoading ? (
         <Button disabled className="w-32">
           <Loader2 className="animate-spin" />
