@@ -11,6 +11,11 @@ type ExtractResult = {
   msg: string;
 };
 
+// Gemini NANO limitation on output
+const MAX_TOKENS_LENGTH = 4096;
+// 1 token ~= 3-4 characters (average), make conservative estimate of 3 chars
+const MAX_CHARS_LENGTH = MAX_TOKENS_LENGTH * 3;
+
 function App() {
   const { isLoading, session } = useEnsureAIOriginTrialReady();
   const activeTab = useActiveTab();
@@ -30,6 +35,11 @@ function App() {
       const { error, msg } = result[0]?.result as any as ExtractResult;
       if (!error) {
         if (session) {
+          // check for msg to not exceed max length
+          if (msg.length > MAX_CHARS_LENGTH) {
+            setGlobalError(true);
+            return;
+          }
           setResponseLoading(true);
           try {
             const res = await session.prompt(msg);
